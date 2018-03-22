@@ -5,7 +5,7 @@ const app = require("../../app");
 const Driver = mongoose.model("driver");
 
 describe("Drivers controller", () => {
-  xit("Post to /api/driver create new driver",(done) => {
+  it("Post to /api/driver create new driver",(done) => {
     Driver.count()
       // 先計算 driver collection 中的數量
       .then((beforeCreateCount) => {
@@ -24,7 +24,7 @@ describe("Drivers controller", () => {
       });
   });
 
-  xit("Put to /api/driver/:id update a existing driver", (done) => {
+  it("Put to /api/driver/:id update a existing driver", (done) => {
     const driver = new Driver({email:"put@test.com", driving:false});
 
     driver.save()
@@ -53,7 +53,6 @@ describe("Drivers controller", () => {
           .end(() => {
             Driver.findOne({email:"delete@test.com"})
               .then((driver) => {
-                console.log(driver);
                 assert(driver === null);
                 done();
               });
@@ -61,7 +60,7 @@ describe("Drivers controller", () => {
       });
   });
 
-  xit("GET to /api/driver to find srivers in a location", (done) =>{
+  it("GET to /api/driver to find drivers in a location", (done) =>{
     const seattleDriver = new Driver({
       email: "seattleDriver@test.com",
       geometry: { type:"Point", coordinates:[-122.4759902, 47.6147628]}
@@ -74,12 +73,12 @@ describe("Drivers controller", () => {
     Promise.all([seattleDriver.save(), miamiDriver.save()])
       .then(() => {
         request(app)
-          .get("/api/driver?lng=-80&lat=25")
+          .get("/api/driver/search?lng=-80&lat=25")
           .end((err, response) => {
             console.log(response);
             done();
           });
-      })
+      });
   });
 
 });

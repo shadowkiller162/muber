@@ -5,7 +5,7 @@ module.exports = {
     res.send({hi:"there"});
   },
 
-  index(req, res, next){
+  search(req, res, next){
     // http://google.com?lng=80&lat=20
     const {lng, lat} = req.query;
 
@@ -16,11 +16,11 @@ module.exports = {
             type:"Point",
             coordinates:[lng,lat]
           },
-          $maxDistance:200000
+            $maxDistance:200000
         }
       }
     }
-  )
+    )
     .then(drivers => res.send(drivers))
     .catch(next);
   },
